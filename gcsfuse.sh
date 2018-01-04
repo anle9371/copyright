@@ -2,4 +2,6 @@
 
 mkdir -p /mnt/gcs
 gcsfuse copyright /mnt/gcs
-sleep infinity
+jupyter notebook --allow-root "$@"
+#/run_jupyter.sh
+#sleep infinity
