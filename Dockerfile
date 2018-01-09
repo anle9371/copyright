@@ -1,12 +1,7 @@
 FROM gcr.io/tensorflow/tensorflow:latest-devel
 
 # Copy the current directory contents into the container at /app
-COPY amy* /app/
-
-COPY *.ipynb /app/
-
-# Set the working directory to /app
-WORKDIR /app
+COPY myapp/* /app/
 
 RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
@@ -23,7 +18,10 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     chmod +x /app/amy.sh
 
 
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+RUN pip install --trusted-host pypi.python.org -r /app/requirements.txt
+
+# Set the working directory to /mnt
+WORKDIR /mnt
 
 ENTRYPOINT ["/app/amy.sh"]
 
