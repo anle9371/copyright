@@ -4,19 +4,31 @@
 mkdir -p /mnt/gcs
 gcsfuse copyright /mnt/gcs
 
-# # Use signals to communicate with an application from the host machine
+# copy jupyter config file 
+mv /app/jupyter_notebook_config.json ~/.jupyter/
 
+# extract the images
+cd app
+tar xvf /app/not_sources.tar.gz
+tar xvf /app/sources.tar.gz
 
-# # build the model - compile the code (can take five to ten minutes)
+# create input for the model
+mkdir /mnt/copyright
+python creating_input.py -i /app -o /mnt/copyright
+
+# # build the model - compile the code (can take 2hrs)
+# cd /tensorflow
 # bazel build -c opt --copt=-mavx /tensorflow/tensorflow/examples/image_retraining:retrain
 
-# # retrain with the flower images (around twenty minutes in total)
+echo "model has been built"
+
+# # retrain with my own images (around 2hrs in total)
 # bazel-bin/tensorflow/examples/image_retraining/retrain \
-#     --bottleneck_dir=/tf_files/bottlenecks \
-#     --model_dir=/tf_files/inception \
-#     --output_graph=/tf_files/retrained_graph.pb \
-#     --output_labels=/tf_files/retrained_labels.txt \
-#     --image_dir /tf_files/flower_photos
+#     --bottleneck_dir=/mnt/bottlenecks \
+#     --model_dir=/mnt/inception \
+#     --output_graph=/mnt/retrained_graph.pb \
+#     --output_labels=/mnt/retrained_labels.txt \
+#     --image_dir /mnt/copyright
 
 jupyter notebook --allow-root "$@"
 # sleep infinity
