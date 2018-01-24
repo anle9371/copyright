@@ -89,8 +89,8 @@ def write_cuts(copies, inpf, outf):
             im_test.save(os.path.join(test_directory_not, "test_copy_" + str(k) \
                                       + ".jpg"))
 
-    imagedict[len(sources)] = [os.path.join(os.getcwd(),"null_image.jpg")]
-    with open('inception-images.json', 'w') as fp:
+    imagedict[len(sources)] = [os.path.join(inpf,"null_image.jpg")]
+    with open(os.path.join(outf,'inception-images.json'), 'w') as fp:
         json.dump(imagedict, fp)
 
 
