@@ -10,12 +10,14 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     apt-utils \
     google-cloud-sdk
 
-RUN gcloud auth activate-service-account --key-file=/app/amykey.json && \
-    export GCSFUSE_REPO="gcsfuse-$(lsb_release -c -s)" && \
-    echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" | tee /etc/apt/sources.list.d/gcsfuse.list && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
-    apt-get update && apt-get install -y \
-    gcsfuse
+# gcsfuse - connect to google cloud service
+# also see the corresponding lines in amy.sh
+# RUN gcloud auth activate-service-account --key-file=/app/amykey.json && \
+#     export GCSFUSE_REPO="gcsfuse-$(lsb_release -c -s)" && \
+#     echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" | tee /etc/apt/sources.list.d/gcsfuse.list && \
+#     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+#     apt-get update && apt-get install -y \
+#     gcsfuse
     
 RUN chmod +x /app/amy.sh
 

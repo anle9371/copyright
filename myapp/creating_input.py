@@ -1,6 +1,10 @@
 #!/usr/bin/python
 
-import getopt, random, os, sys 
+# this file creates the input images and folder structure for inception
+# it also outputs a json file to map the image classes (aka folder names)
+# to the images themselves, which is useful for demo and debug purposes
+
+import getopt, json, random, os, sys 
 from PIL import Image
 from scipy import misc
 import matplotlib.pyplot as plt
@@ -10,6 +14,7 @@ def limit(a, b):
     if a < b:
         return a
     else: return b
+
     
 def generate_cut(image_matrix):
     x,y = image_matrix.shape[:2]
@@ -25,6 +30,8 @@ def write_cuts(copies, inpf, outf):
     # get sources an generate copies cuts for each source
     # then store every cut in its corresponding source folder
 
+    imagedict = {}
+
     #create output folders with all the sources carpets --> source_training
     root_folder = os.path.join(outf, "source_training")
     test_folder = os.path.join(outf, "test")
@@ -38,18 +45,19 @@ def write_cuts(copies, inpf, outf):
     # get all the sources from the path
     sources = []
     for (dirpath, dirnames, filenames) in os.walk(sources_path):
-        sources.extend([sources_path + "/" + file for file in filenames])
+        sources.extend([os.path.join(sources_path,file) for file in filenames])
         break
     
     not_sources = []
     for (dirpath, dirnames, filenames) in os.walk(not_sources_path):
-        not_sources.extend([not_sources_path + "/" + file for file in filenames])
+        not_sources.extend([os.path.join(not_sources_path, file) for file in filenames])
         break
 
     # for each source create a subfolder of source_training and store the cuts
     for i,source in enumerate(sources):
         source_directory = os.path.join(root_folder, "class_" + str(i))
         test_directory = os.path.join(test_folder, "class_" + str(i))
+        imagedict[i] = [source] ############
         os.makedirs(source_directory)
         os.makedirs(test_directory)
         image = misc.imread(source)
@@ -80,6 +88,11 @@ def write_cuts(copies, inpf, outf):
             im_test = Image.fromarray(test_cut)
             im_test.save(os.path.join(test_directory_not, "test_copy_" + str(k) \
                                       + ".jpg"))
+
+    imagedict[len(sources)] = [os.path.join(os.getcwd(),"null_image.jpg")]
+    with open('inception-images.json', 'w') as fp:
+        json.dump(imagedict, fp)
+
 
 
 def main(argv):
