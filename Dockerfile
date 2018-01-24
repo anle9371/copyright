@@ -1,8 +1,5 @@
 FROM gcr.io/tensorflow/tensorflow:latest-devel
 
-# Copy the current directory contents into the container at /app
-COPY myapp/* /app/
-
 ## these RUN commands set up the docker with google cloud services (sdk and storgage)
 # RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
 #     echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
@@ -22,12 +19,15 @@ COPY myapp/* /app/
 
 RUN apt-get update && apt-get install -y \
     python-tk
-    
+
+# Copy the current directory contents into the container at /app
+ADD myapp/ /app
+
 RUN chmod +x /app/amy.sh
 
 RUN pip install --trusted-host pypi.python.org -r /app/requirements.txt
 
 # Set the working directory 
-# WORKDIR /tensorflow
+WORKDIR /tensorflow
 
 ENTRYPOINT ["/app/amy.sh"]

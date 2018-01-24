@@ -3,7 +3,7 @@
 # this is the docker entrypoint shell script that
 # sets up the files and folders for model building and training
 
-IMGPATH="/mnt/copyright"
+IMGPATH="~"
 LOGFILE="/app/log.txt"
 
 # create logfile
@@ -15,12 +15,12 @@ echo "logfile created" >> $LOGFILE
 # gcsfuse copyright /mnt/gcs
 
 # copy jupyter config file 
-#mv /app/jupyter_notebook_config.json ~/.jupyter/
-#echo "jupyter config transferred" >> $LOGFILE
+mv /app/jupyter_notebook_config.json ~/.jupyter/
+echo "jupyter config transferred" >> $LOGFILE
 
 # copy demo notebook
-mv /app/using_inception.ipynb /mnt
-echo "demo notebook moved to /mnt" >> $LOGFILE
+mv /app/using_inception.ipynb ~
+echo "demo notebook moved to home" >> $LOGFILE
 
 # extract the images
 tar xvf /app/not_sources.tar.gz -C /app
@@ -28,7 +28,7 @@ tar xvf /app/sources.tar.gz -C /app
 echo "images untarred" >> $LOGFILE
 
 # create input for the model
-mkdir /mnt/copyright
+# mkdir /mnt/copyright
 python /app/creating_input.py -i /app -o $IMGPATH
 echo "created input for inception" >> $LOGFILE
 
@@ -48,6 +48,8 @@ echo "created input for inception" >> $LOGFILE
 
 # echo "\n\n model has been retrained \n\n" >> $LOGFILE
 
-#jupyter notebook --allow-root --config /app/jupyter_notebook_config.json "$@"
-jupyter notebook --allow-root --no-browser "$@"
+
+#jupyter notebook --allow-root --no-browser "$@"
+jupyter notebook --allow-root --no-browser --notebook-dir='~' 
+
 # sleep infinity
