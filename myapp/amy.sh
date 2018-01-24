@@ -3,7 +3,7 @@
 # this is the docker entrypoint shell script that
 # sets up the files and folders for model building and training
 
-IMGPATH="~"
+IMGPATH="~/"
 LOGFILE="/app/log.txt"
 
 # create logfile
