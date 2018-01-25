@@ -23,7 +23,6 @@ echo "jupyter config transferred" >> $LOGFILE
 mv /app/using_inception.ipynb ~
 echo "demo notebook moved to home" >> $LOGFILE
 
-
 # extract the images
 tar xvf /app/not_sources.tar.gz -C /app
 tar xvf /app/sources.tar.gz -C /app
@@ -31,7 +30,7 @@ echo "images untarred" >> $LOGFILE
 
 # create input for the model
 # mkdir /mnt/copyright
-python /app/creating_input.py -i /app/amytmp -o $IMGPATH
+python /app/creating_input.py -i /app -o $IMGPATH
 echo "created input for inception" >> $LOGFILE
 
 # build
