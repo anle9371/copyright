@@ -25,6 +25,8 @@ ADD myapp/ /app
 
 RUN chmod +x /app/amy.sh
 
+#RUN chmod +x /app/model.sh
+
 RUN pip install --trusted-host pypi.python.org -r /app/requirements.txt
 
 # Set the working directory 
