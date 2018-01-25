@@ -23,8 +23,6 @@ echo "jupyter config transferred" >> $LOGFILE
 mv /app/using_inception.ipynb ~
 echo "demo notebook moved to home" >> $LOGFILE
 
-# start jupyter server
-jupyter notebook --allow-root --no-browser --notebook-dir='~' 
 
 # extract the images
 tar xvf /app/not_sources.tar.gz -C /app
@@ -45,6 +43,9 @@ bazel-bin/tensorflow/examples/image_retraining/retrain \
     --model_dir=/mnt/inception \
     --output_graph=/mnt/retrained_graph.pb \
     --output_labels=/mnt/retrained_labels.txt \
-    --image_dir $IMGPATH >> $LOGFILE
+    --image_dir $IMGPATH 
+
 
 # sleep infinity
+# start jupyter server
+jupyter notebook --allow-root --no-browser --notebook-dir='~' 
